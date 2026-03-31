@@ -1,58 +1,148 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <title>Pengumuman</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-  <style>
-    body {
-      margin:0;
-      font-family: sans-serif;
-      background: linear-gradient(135deg,#667eea,#764ba2);
-      color:white;
-      padding:20px;
-    }
+<title>Pengumuman Sekolah</title>
 
-    h2 {
-      text-align:center;
-    }
+<style>
+body {
+  margin:0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg,#667eea,#764ba2);
+  color:white;
+}
 
-    .card {
-      background: rgba(255,255,255,0.1);
-      padding:15px;
-      margin:10px 0;
-      border-radius:10px;
-    }
-  </style>
+.header {
+  padding:20px;
+  text-align:center;
+  font-size:20px;
+  font-weight:bold;
+}
+
+.container {
+  padding:15px;
+  max-width:500px;
+  margin:auto;
+}
+
+.card {
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  padding:15px;
+  border-radius:12px;
+  margin-bottom:12px;
+  animation: fadeIn 0.4s ease;
+}
+
+.card h3 {
+  margin:0 0 5px;
+  font-size:16px;
+}
+
+.card p {
+  margin:5px 0;
+  font-size:14px;
+}
+
+.card small {
+  opacity:0.7;
+}
+
+.btn {
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  margin-top:10px;
+  font-size:15px;
+  background:#ffffff;
+  color:#333;
+}
+
+.loading {
+  text-align:center;
+  opacity:0.7;
+}
+
+@keyframes fadeIn {
+  from {opacity:0; transform:translateY(10px);}
+  to {opacity:1; transform:translateY(0);}
+}
+</style>
 </head>
 
 <body>
 
-<h2>📢 Pengumuman Sekolah</h2>
+<div class="header">📢 Pengumuman Sekolah</div>
 
-<div id="data">Loading...</div>
+<div class="container">
+
+<div id="list" class="loading">Memuat data...</div>
+
+<button class="btn" onclick="loadData()">🔄 Refresh</button>
+
+</div>
 
 <script>
-const url = "https://script.google.com/macros/s/AKfycbxz6COoQhPUSD_O1JGNByBR5VMeN1dwW6zCgQaLASCwFCbiSJNOtZapafMVAa7VrT1r/exec?mode=pengumuman";
 
-fetch(url)
-.then(res => res.json())
-.then(data => {
-  let html = "";
-  data.forEach(item => {
-    html += `
-      <div class="card">
-        <b>${item.judul}</b><br>
-        <small>${item.tanggal}</small>
-        <p>${item.isi}</p>
-      </div>
-    `;
+const URL = "https://script.google.com/macros/s/AKfycbxz6COoQhPUSD_O1JGNByBR5VMeN1dwW6zCgQaLASCwFCbiSJNOtZapafMVAa7VrT1r/exec?mode=pengumuman";
+
+function formatTanggal(tgl){
+  const d = new Date(tgl);
+  return d.toLocaleDateString("id-ID", {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
   });
-  document.getElementById("data").innerHTML = html;
-})
-.catch(err => {
-  document.getElementById("data").innerHTML = "Gagal load data";
-});
+}
+
+function isToday(tgl){
+  const d = new Date(tgl);
+  const today = new Date();
+  return d.toDateString() === today.toDateString();
+}
+
+function loadData(){
+  document.getElementById("list").innerHTML = "Memuat data...";
+
+  fetch(URL)
+  .then(res => res.json())
+  .then(data => {
+
+    let html = "";
+
+    data.reverse().forEach(item => {
+
+      const todayBadge = isToday(item.tanggal)
+        ? "<span style='color:yellow;'>🔥 Hari ini</span><br>"
+        : "";
+
+      html += `
+        <div class="card">
+          ${todayBadge}
+          <h3>${item.judul}</h3>
+          <p>${item.isi}</p>
+          <small>📅 ${formatTanggal(item.tanggal)}</small>
+        </div>
+      `;
+    });
+
+    document.getElementById("list").innerHTML = html;
+
+  })
+  .catch(() => {
+    document.getElementById("list").innerHTML = "❌ Gagal memuat data";
+  });
+}
+
+// AUTO LOAD
+loadData();
+
+// AUTO REFRESH tiap 30 detik
+setInterval(loadData, 30000);
+
 </script>
 
 </body>
