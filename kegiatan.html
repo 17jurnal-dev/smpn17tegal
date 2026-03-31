@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kegiatan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin:0;
+      font-family: sans-serif;
+      background: linear-gradient(135deg,#667eea,#764ba2);
+      color:white;
+      padding:20px;
+    }
+
+    h2 {
+      text-align:center;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.1);
+      padding:15px;
+      margin:10px 0;
+      border-radius:10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>📅 Kegiatan Sekolah</h2>
+
+<div id="data">Loading...</div>
+
+<script>
+const url = "https://script.google.com/macros/s/AKfycbxz6COoQhPUSD_O1JGNByBR5VMeN1dwW6zCgQaLASCwFCbiSJNOtZapafMVAa7VrT1r/exec?mode=pengumuman";
+
+fetch(url)
+.then(res => res.json())
+.then(data => {
+  let html = "";
+  data.forEach(item => {
+    html += `
+      <div class="card">
+        <b>${item.judul}</b><br>
+        <small>${item.tanggal}</small>
+        <p>${item.isi}</p>
+      </div>
+    `;
+  });
+  document.getElementById("data").innerHTML = html;
+})
+.catch(err => {
+  document.getElementById("data").innerHTML = "Gagal load data";
+});
+</script>
+
+</body>
+</html>
