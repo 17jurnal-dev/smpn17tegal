@@ -1,102 +1,140 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>SMPN 17 Tegal</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-  <!-- MOBILE FRIENDLY -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>SMPN 17 Tegal</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
-    }
+<style>
+body {
+  margin:0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg,#667eea,#764ba2);
+  color:white;
+}
 
-    body {
-      margin: 0;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      text-align: center;
-    }
+/* PAGE */
+.page {
+  display:none;
+  padding:15px;
+  max-width:500px;
+  margin:auto;
+}
 
-    .container {
-      padding: 20px;
-      max-width: 500px;
-      margin: auto;
-    }
+.active {
+  display:block;
+}
 
-    .header {
-      margin-top: 20px;
-    }
+/* CARD */
+.card {
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  padding:15px;
+  border-radius:12px;
+  margin-bottom:10px;
+}
 
-    .header h1 {
-      margin: 10px 0 5px;
-      font-size: 26px;
-    }
+/* IFRAME */
+iframe {
+  width:100%;
+  height:80vh;
+  border:none;
+  border-radius:10px;
+}
 
-    .header p {
-      opacity: 0.8;
-      font-size: 14px;
-    }
+/* NAVBAR */
+.navbar {
+  position:fixed;
+  bottom:0;
+  width:100%;
+  display:flex;
+  background:rgba(0,0,0,0.7);
+}
 
-    .menu {
-      margin-top: 30px;
-    }
+.navbar button {
+  flex:1;
+  padding:10px;
+  border:none;
+  background:none;
+  color:white;
+  font-size:12px;
+}
 
-    .menu a {
-      display: block;
-      text-decoration: none;
-      margin: 12px 0;
-      padding: 15px;
-      border-radius: 12px;
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(10px);
-      color: white;
-      font-size: 16px;
-      transition: 0.2s;
-    }
-
-    .menu a:hover {
-      transform: scale(1.03);
-      background: rgba(255,255,255,0.2);
-    }
-
-    .menu a:active {
-      transform: scale(0.97);
-    }
-
-    .footer {
-      margin-top: 40px;
-      font-size: 12px;
-      opacity: 0.7;
-    }
-  </style>
+.navbar button.active {
+  background:rgba(255,255,255,0.2);
+}
+</style>
 </head>
 
 <body>
 
-<div class="container">
-
-  <div class="header">
-    <h1>🏫 SMPN 17 Tegal</h1>
-    <p>Pusat Informasi Sekolah</p>
-  </div>
-
-  <div class="menu">
-    <a href="pengumuman.html">📢 Pengumuman</a>
-    <a href="kegiatan.html">📅 Kegiatan</a>
-    <a href="https://script.google.com/macros/s/AKfycbz3gd_lIfhGX-PwmdoWnT5WF8icANrigvzQme6ed8CSOuSzqrPxYlkK0dxTP40jtdbOlA/exec">📚 Jamu Linu</a>
-    <a href="https://script.google.com/macros/s/AKfycbzY7A1CKQ4E7te_sNIMwRWOGQAV_SdBrQ7gbxrRqk1mIUmLsC5MPNrQRd2IF32buN8N/exec">
-      📝 CBT Online
-    </a>
-  </div>
-
-  <div class="footer">
-    © sinpapay 2026 • SMPN 17 Tegal
-  </div>
-
+<!-- PENGUMUMAN -->
+<div id="pengumuman" class="page active">
+  <h3>📢 Pengumuman</h3>
+  <div id="listPengumuman">Loading...</div>
 </div>
+
+<!-- KEGIATAN -->
+<div id="kegiatan" class="page">
+  <h3>📅 Kegiatan</h3>
+  <div id="listKegiatan">Loading...</div>
+</div>
+
+<!-- JAMU LINU -->
+<div id="jamu" class="page">
+  <iframe src="https://script.google.com/macros/s/AKfycbz3gd_lIfhGX-PwmdoWnT5WF8icANrigvzQme6ed8CSOuSzqrPxYlkK0dxTP40jtdbOlA/exec"></iframe>
+</div>
+
+<!-- CBT -->
+<div id="cbt" class="page">
+  <iframe src="https://script.google.com/macros/s/AKfycbzY7A1CKQ4E7te_sNIMwRWOGQAV_SdBrQ7gbxrRqk1mIUmLsC5MPNrQRd2IF32buN8N/exec"></iframe>
+</div>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <button onclick="showPage('pengumuman', this)" class="active">📢<br>Info</button>
+  <button onclick="showPage('kegiatan', this)">📅<br>Kegiatan</button>
+  <button onclick="showPage('jamu', this)">📚<br>Jamu</button>
+  <button onclick="showPage('cbt', this)">📝<br>CBT</button>
+</div>
+
+<script>
+
+const GAS_URL = "https://script.google.com/macros/s/AKfycbxz6COoQhPUSD_O1JGNByBR5VMeN1dwW6zCgQaLASCwFCbiSJNOtZapafMVAa7VrT1r/exec";
+
+/* NAVIGATION */
+function showPage(id, btn){
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+
+  document.querySelectorAll(".navbar button").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+}
+
+/* LOAD DATA */
+function loadData(mode, elementId){
+  fetch(GAS_URL + "?mode=" + mode)
+  .then(res => res.json())
+  .then(data => {
+    let html = "";
+    data.reverse().forEach(item => {
+      html += `
+        <div class="card">
+          <b>${item.judul}</b><br>
+          ${item.isi}<br>
+          <small>${new Date(item.tanggal).toLocaleDateString("id-ID")}</small>
+        </div>
+      `;
+    });
+    document.getElementById(elementId).innerHTML = html;
+  });
+}
+
+loadData("pengumuman", "listPengumuman");
+loadData("kegiatan", "listKegiatan");
+
+</script>
 
 </body>
 </html>
