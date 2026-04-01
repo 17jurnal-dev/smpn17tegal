@@ -136,11 +136,11 @@ iframe {
     ✅ Sukses: <span id="statSukses">0</span><br>
     ❌ Gagal: <span id="statGagal">0</span>
   </div>
+  <div class="card">
+    <b>📥 Inbox Siswa</b>
+    <div id="inboxList">Loading...</div>
+  </div>
   <canvas id="chartWA" height="200"></canvas>
-<div class="card">
-  <b>📥 Inbox Siswa</b>
-  <div id="inboxList">Loading...</div>
-</div>
 </div>
 
 <!-- NAVBAR -->
@@ -318,7 +318,7 @@ function cekNotif(){
 // cek tiap 10 detik
 setInterval(cekNotif, 10000);
 
-const ADMIN_PIN = "1707"; // ganti bebas
+const ADMIN_PIN = "170717"; // ganti bebas
 let isAdmin = false;
 
 function loginAdmin(){
