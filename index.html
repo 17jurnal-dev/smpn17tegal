@@ -161,11 +161,11 @@ function kirimWA(){
 
   fetch(GAS_URL + "?action=kirimWA&key=JITU2026")
   .then(res => res.text())
-  .then(msg => {
-    alert(msg);
+  .then(res => {
+    showToast("✅ Pesan berhasil diproses!");
   })
   .catch(() => {
-    alert("❌ Gagal kirim WA");
+    showToast("❌ Gagal kirim WA", "error");
   });
 
 }
