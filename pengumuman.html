@@ -61,6 +61,34 @@ body {
   color:#333;
 }
 
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #333;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 9999;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.toast.success {
+  background: #16a34a;
+}
+
+.toast.error {
+  background: #dc2626;
+}
+  
 .loading {
   text-align:center;
   opacity:0.7;
@@ -74,7 +102,7 @@ body {
 </head>
 
 <body>
-
+<div id="toast" class="toast"></div>
 <div class="header">📢 Pengumuman Sekolah</div>
 
 <div class="container">
@@ -142,7 +170,15 @@ loadData();
 
 // AUTO REFRESH tiap 30 detik
 setInterval(loadData, 30000);
+function showToast(message, type = "success") {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.className = `toast show ${type}`;
 
+  setTimeout(() => {
+    toast.className = "toast";
+  }, 3000);
+}
 </script>
 
 </body>
