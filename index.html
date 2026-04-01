@@ -94,12 +94,34 @@ iframe {
   <iframe src="https://script.google.com/macros/s/AKfycbzY7A1CKQ4E7te_sNIMwRWOGQAV_SdBrQ7gbxrRqk1mIUmLsC5MPNrQRd2IF32buN8N/exec"></iframe>
 </div>
 
+<!-- WA ADMIN -->
+<div id="wa" class="page">
+  <h3>📲 WA Broadcast</h3>
+
+  <select id="kelas" style="width:100%;padding:10px;border-radius:10px;margin-bottom:10px;">
+    <option value="SEMUA">Semua Kelas</option>
+    <option value="7A">7A</option>
+    <option value="8B">8B</option>
+  </select>
+
+  <button onclick="previewWA()" style="width:100%;padding:10px;border:none;border-radius:10px;margin-bottom:10px;">
+    👁️ Preview
+  </button>
+
+  <button onclick="kirimWAAdmin()" style="width:100%;padding:10px;border:none;border-radius:10px;margin-bottom:10px;">
+    🚀 Kirim WA
+  </button>
+
+  <div id="previewBox" class="card">Preview akan muncul di sini...</div>
+</div>
+
 <!-- NAVBAR -->
 <div class="navbar">
   <button onclick="showPage('pengumuman', this)" class="active">📢<br>Info</button>
   <button onclick="showPage('kegiatan', this)">📅<br>Kegiatan</button>
   <button onclick="showPage('jamu', this)">📚<br>Jamu</button>
   <button onclick="showPage('cbt', this)">📝<br>CBT</button>
+  <button onclick="showPage('wa', this)">📲<br>WA</button>
 </div>
 
 <script>
