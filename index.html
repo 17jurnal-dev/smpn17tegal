@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#667eea">
 
 <title>SMPN 17 Tegal</title>
 
@@ -110,6 +112,13 @@ iframe {
   </button>
 
   <div id="previewBox" class="card">Preview akan muncul di sini...</div>
+
+  <div class="card">
+    <b>📊 Statistik WA</b><br><br>
+    Total: <span id="statTotal">0</span><br>
+    ✅ Sukses: <span id="statSukses">0</span><br>
+    ❌ Gagal: <span id="statGagal">0</span>
+  </div>
 </div>
 
 <!-- NAVBAR -->
@@ -118,7 +127,7 @@ iframe {
   <button onclick="showPage('kegiatan', this)">📅<br>Kegiatan</button>
   <button onclick="showPage('jamu', this)">📚<br>Jamu</button>
   <button onclick="showPage('cbt', this)">📝<br>CBT</button>
-  <button onclick="showPage('wa', this)">📲<br>WA</button>
+  <button onclick="loginAdmin()">📲<br>WA</button>
 </div>
   
 <div id="toast" style="
@@ -250,6 +259,55 @@ function showToast(msg){
   t.innerText = msg;
   t.style.display = "block";
   setTimeout(()=>t.style.display="none",3000);
+}
+
+function loadStatistik(){
+  fetch(GAS_URL + "?action=statistikWA")
+  .then(res => res.json())
+  .then(d => {
+    document.getElementById("statTotal").innerText = d.total;
+    document.getElementById("statSukses").innerText = d.sukses;
+    document.getElementById("statGagal").innerText = d.gagal;
+  });
+  if(id === "wa") loadStatistik();
+}
+
+let lastJudul = "";
+
+function cekNotif(){
+
+  fetch(GAS_URL + "?action=notif")
+  .then(res => res.json())
+  .then(d => {
+
+    if(!d.judul) return;
+
+    if(lastJudul && d.judul !== lastJudul){
+      showToast("🔔 Pengumuman baru: " + d.judul);
+    }
+
+    lastJudul = d.judul;
+
+  });
+
+}
+
+// cek tiap 10 detik
+setInterval(cekNotif, 10000);
+
+const ADMIN_PIN = "1707"; // ganti bebas
+let isAdmin = false;
+
+function loginAdmin(){
+  const pin = prompt("Masukkan PIN Admin:");
+
+  if(pin === ADMIN_PIN){
+    isAdmin = true;
+    showToast("✅ Mode Admin aktif");
+    showPage('wa', document.querySelectorAll('.navbar button')[4]);
+  } else {
+    showToast("❌ PIN salah");
+  }
 }
 
 </script>
