@@ -123,7 +123,19 @@ iframe {
   <button onclick="showPage('cbt', this)">📝<br>CBT</button>
   <button onclick="showPage('wa', this)">📲<br>WA</button>
 </div>
-
+  
+<div id="toast" style="
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+background:#22c55e;
+color:white;
+padding:10px 20px;
+border-radius:8px;
+display:none;
+"></div>
+  
 <script>
 
 const GAS_URL = "https://script.google.com/macros/s/AKfycbxz6COoQhPUSD_O1JGNByBR5VMeN1dwW6zCgQaLASCwFCbiSJNOtZapafMVAa7VrT1r/exec";
@@ -190,6 +202,57 @@ function kirimWA(){
     showToast("❌ Gagal kirim WA", "error");
   });
 
+}
+// ============================
+// 👁️ PREVIEW WA
+// ============================
+function previewWA(){
+  const kelas = document.getElementById("kelas").value;
+
+  fetch(GAS_URL + "?action=previewWA&kelas=" + kelas + "&key=JITU2026")
+  .then(res => res.json())
+  .then(data => {
+
+    if(data.error){
+      showToast(data.error);
+      return;
+    }
+
+    document.getElementById("previewBox").innerText =
+      `Total Target: ${data.total}
+
+Contoh Pesan:
+${data.contohPesan}`;
+  })
+  .catch(() => {
+    showToast("❌ Gagal preview");
+  });
+}
+
+// ============================
+// 🚀 KIRIM WA
+// ============================
+function kirimWAAdmin(){
+
+  const kelas = document.getElementById("kelas").value;
+
+  if(!confirm("Yakin kirim WA ke " + kelas + "?")) return;
+
+  fetch(GAS_URL + "?action=kirimWA&kelas=" + kelas + "&key=JITU2026")
+  .then(res => res.text())
+  .then(res => {
+    showToast(res);
+  })
+  .catch(() => {
+    showToast("❌ Gagal kirim WA");
+  });
+}
+
+function showToast(msg){
+  const t = document.getElementById("toast");
+  t.innerText = msg;
+  t.style.display = "block";
+  setTimeout(()=>t.style.display="none",3000);
 }
 
 </script>
