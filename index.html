@@ -62,7 +62,8 @@ iframe {
   border:none;
   background:none;
   color:white;
-  font-size:12px;
+  font-size:11px;
+  overflow-x: auto;
 }
 
 .navbar button.active {
@@ -85,12 +86,18 @@ iframe {
   <div id="listKegiatan">Loading...</div>
 </div>
 
-<!-- Absensi -->
-<div class="card">
-  <b>🎓 Absensi</b><br><br>
-  <input id="nama" placeholder="Nama"><br><br>
-  <input id="kelas" placeholder="Kelas"><br><br>
-  <button onclick="absen()">Hadir</button>
+<!-- ABSENSI -->
+<div id="absensi" class="page">
+  <h3>🎓 Absensi Siswa</h3>
+
+  <div class="card">
+    <input id="nama" placeholder="Nama" style="width:100%;padding:10px;margin-bottom:10px;border-radius:8px;border:none;">
+    <input id="kelas" placeholder="Kelas" style="width:100%;padding:10px;margin-bottom:10px;border-radius:8px;border:none;">
+    
+    <button onclick="absen()" style="width:100%;padding:10px;border:none;border-radius:10px;">
+      ✅ Hadir
+    </button>
+  </div>
 </div>
 
 <!-- JAMU LINU -->
@@ -140,6 +147,7 @@ iframe {
 <div class="navbar">
   <button onclick="showPage('pengumuman', this)" class="active">📢<br>Info</button>
   <button onclick="showPage('kegiatan', this)">📅<br>Kegiatan</button>
+  <button onclick="showPage('absensi', this)">🎓<br>Absen</button>
   <button onclick="showPage('jamu', this)">📚<br>Jamu</button>
   <button onclick="showPage('cbt', this)">📝<br>CBT</button>
   <button onclick="loginAdmin()">📲<br>WA</button>
