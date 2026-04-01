@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#667eea">
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
+  
 <title>SMPN 17 Tegal</title>
 
 <style>
@@ -119,6 +121,17 @@ iframe {
     ✅ Sukses: <span id="statSukses">0</span><br>
     ❌ Gagal: <span id="statGagal">0</span>
   </div>
+  <canvas id="chartWA" height="200"></canvas>
+<div class="card">
+  <b>📥 Inbox Siswa</b>
+  <div id="inboxList">Loading...</div>
+</div>
+<div class="card">
+  <b>🎓 Absensi</b><br><br>
+  <input id="nama" placeholder="Nama"><br><br>
+  <input id="kelas" placeholder="Kelas"><br><br>
+  <button onclick="absen()">Hadir</button>
+</div>
 </div>
 
 <!-- NAVBAR -->
@@ -309,6 +322,66 @@ function loginAdmin(){
     showToast("❌ PIN salah");
   }
 }
+let chart;
+
+function renderChart(data){
+  const ctx = document.getElementById('chartWA');
+
+  if(chart) chart.destroy();
+
+  chart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Sukses', 'Gagal'],
+      datasets: [{
+        data: [data.sukses, data.gagal]
+      }]
+    }
+  });
+}
+
+function loadStatistik(){
+  fetch(GAS_URL + "?action=statistikWA")
+  .then(r=>r.json())
+  .then(d=>{
+    document.getElementById("statTotal").innerText = d.total;
+    document.getElementById("statSukses").innerText = d.sukses;
+    document.getElementById("statGagal").innerText = d.gagal;
+
+    renderChart(d);
+  });
+}
+
+function loadInbox(){
+  fetch(GAS_URL + "?action=inbox")
+  .then(r=>r.json())
+  .then(d=>{
+    let html="";
+    d.forEach(x=>{
+      html+=`<div class="card">
+        <b>${x.nama}</b><br>
+        ${x.pesan}
+      </div>`;
+    });
+    document.getElementById("inboxList").innerHTML = html;
+  });
+}
+
+function absen(){
+  const nama = document.getElementById("nama").value;
+  const kelas = document.getElementById("kelas").value;
+
+  fetch(GAS_URL+`?action=absen&nama=${nama}&kelas=${kelas}`)
+  .then(()=>showToast("✅ Absen berhasil"));
+}
+
+window.OneSignal = window.OneSignal || [];
+OneSignal.push(function() {
+  OneSignal.init({
+    appId: "ISI_APP_ID_KAMU"
+  });
+});
+
 
 // ============================
 // 📱 REGISTER SERVICE WORKER
