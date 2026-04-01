@@ -310,6 +310,15 @@ function loginAdmin(){
   }
 }
 
+// ============================
+// 📱 REGISTER SERVICE WORKER
+// ============================
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js')
+    .then(() => console.log("SW aktif"))
+    .catch(err => console.log("SW gagal", err));
+}
+
 </script>
 
 </body>
