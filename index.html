@@ -100,6 +100,29 @@ iframe {
   </div>
 </div>
 
+<!-- CHAT -->
+<div id="chat" class="page">
+
+  <h3>💬 Chat Admin</h3>
+
+  <div class="card">
+    <input id="namaUser" placeholder="Nama"
+      style="width:100%;padding:10px;margin-bottom:10px;border-radius:8px;border:none;">
+
+    <input id="noUser" placeholder="No WA (62xxx)"
+      style="width:100%;padding:10px;margin-bottom:10px;border-radius:8px;border:none;">
+
+    <textarea id="pesanUser" placeholder="Tulis pesan..."
+      style="width:100%;padding:10px;border-radius:8px;border:none;"></textarea>
+
+    <button onclick="kirimPesan()"
+      style="width:100%;padding:10px;border:none;border-radius:10px;margin-top:10px;">
+      Kirim
+    </button>
+  </div>
+
+</div>
+
 <!-- JAMU LINU -->
 <div id="jamu" class="page">
   <iframe src="https://script.google.com/macros/s/AKfycbz3gd_lIfhGX-PwmdoWnT5WF8icANrigvzQme6ed8CSOuSzqrPxYlkK0dxTP40jtdbOlA/exec"></iframe>
@@ -148,6 +171,7 @@ iframe {
   <button onclick="showPage('pengumuman', this)" class="active">📢<br>Info</button>
   <button onclick="showPage('kegiatan', this)">📅<br>Kegiatan</button>
   <button onclick="showPage('absensi', this)">🎓<br>Absen</button>
+  <button onclick="showPage('chat', this)">💬<br>Chat</button>
   <button onclick="showPage('jamu', this)">📚<br>Jamu</button>
   <button onclick="showPage('cbt', this)">📝<br>CBT</button>
   <button onclick="loginAdmin()">📲<br>WA</button>
@@ -391,6 +415,28 @@ OneSignal.push(function() {
     appId: "ISI_APP_ID_KAMU"
   });
 });
+
+function kirimPesan(){
+
+  const nama = document.getElementById("namaUser").value;
+  const no = document.getElementById("noUser").value;
+  const pesan = document.getElementById("pesanUser").value;
+
+  if(!nama || !no || !pesan){
+    showToast("❌ Lengkapi data dulu","error");
+    return;
+  }
+
+  fetch(GAS_URL + `?action=kirimPesan&nama=${encodeURIComponent(nama)}&no=${no}&pesan=${encodeURIComponent(pesan)}`)
+  .then(res=>res.json())
+  .then(res=>{
+    showToast("🤖 " + res.reply);
+  })
+  .catch(()=>{
+    showToast("❌ Gagal kirim","error");
+  });
+
+}
 
 
 // ============================
