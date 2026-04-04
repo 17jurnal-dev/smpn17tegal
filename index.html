@@ -227,7 +227,6 @@ function showPage(id, btn){
 
   document.querySelectorAll(".navbar button").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
-  if(id==="wa"){loadStatistik();loadInbox();}
 }
 
 /* =========================
@@ -248,6 +247,9 @@ function loadData(mode, elementId){
       `;
     });
     document.getElementById(elementId).innerHTML = html;
+  });
+  .catch(()=>{
+    document.getElementById(elementId).innerHTML = "❌ Gagal load data";
   });
 }
 
@@ -398,6 +400,7 @@ function loadStatistik(){
 
     renderChart(d);
   });
+    if(id==="wa"){loadStatistik();loadInbox();}
 }
 
 /* =========================
