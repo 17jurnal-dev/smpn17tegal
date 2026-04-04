@@ -218,17 +218,21 @@ display:none;
 
 const GAS_URL = "https://script.google.com/macros/s/AKfycbxz6COoQhPUSD_O1JGNByBR5VMeN1dwW6zCgQaLASCwFCbiSJNOtZapafMVAa7VrT1r/exec";
 
-/* NAVIGATION */
+/* =========================
+📱 NAVIGATION
+========================= */
 function showPage(id, btn){
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 
   document.querySelectorAll(".navbar button").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
+  if(btn) btn.classList.add("active");
   if(id==="wa"){loadStatistik();loadInbox();}
 }
 
-/* LOAD DATA */
+/* =========================
+📊 LOAD DATA
+========================= */
 function loadData(mode, elementId){
   fetch(GAS_URL + "?mode=" + mode)
   .then(res => res.json())
@@ -244,6 +248,9 @@ function loadData(mode, elementId){
       `;
     });
     document.getElementById(elementId).innerHTML = html;
+  });
+  .catch(()=>{
+    document.getElementById(elementId).innerHTML = "❌ Gagal load data";
   });
 }
 
@@ -312,7 +319,6 @@ ${data.contohPesan}`;
 // 🚀 KIRIM WA
 // ============================
 function kirimWAAdmin(){
-
   const kelas = document.getElementById("kelas").value;
 
   if(!confirm("Yakin kirim WA ke " + kelas + "?")) return;
@@ -327,6 +333,9 @@ function kirimWAAdmin(){
   });
 }
 
+/* =========================
+🍞 TOAST
+========================= */
 function showToast(msg){
   const t = document.getElementById("toast");
   t.innerText = msg;
@@ -334,25 +343,15 @@ function showToast(msg){
   setTimeout(()=>t.style.display="none",3000);
 }
 
-function loadStatistik(){
-  fetch(GAS_URL + "?action=statistikWA")
-  .then(res => res.json())
-  .then(d => {
-    document.getElementById("statTotal").innerText = d.total;
-    document.getElementById("statSukses").innerText = d.sukses;
-    document.getElementById("statGagal").innerText = d.gagal;
-  });
-  if(id === "wa") loadStatistik();
-}
-
+/* =========================
+🔔 NOTIF
+========================= */
 let lastJudul = "";
 
 function cekNotif(){
-
   fetch(GAS_URL + "?action=notif")
   .then(res => res.json())
   .then(d => {
-
     if(!d.judul) return;
 
     if(lastJudul && d.judul !== lastJudul){
@@ -360,14 +359,15 @@ function cekNotif(){
     }
 
     lastJudul = d.judul;
-
   });
-
 }
 
 // cek tiap 10 detik
 setInterval(cekNotif, 10000);
 
+/* =========================
+🔐 ADMIN LOGIN
+========================= */
 const ADMIN_PIN = "170717"; // ganti bebas
 let isAdmin = false;
 
@@ -382,6 +382,10 @@ function loginAdmin(){
     showToast("❌ PIN salah");
   }
 }
+
+/* =========================
+📊 STATISTIK
+========================= */
 let chart;
 
 function renderChart(data){
@@ -412,6 +416,9 @@ function loadStatistik(){
   });
 }
 
+/* =========================
+📥 INBOX
+========================= */
 function loadInbox(){
   fetch(GAS_URL + "?action=inbox")
   .then(r=>r.json())
@@ -427,6 +434,9 @@ function loadInbox(){
   });
 }
 
+/* =========================
+🎓 ABSENSI
+========================= */
 function absen(){
   const nama = document.getElementById("nama").value;
   const kelas = document.getElementById("kelas").value;
@@ -442,8 +452,10 @@ OneSignal.push(function() {
   });
 });
 
+/* =========================
+💬 CHAT
+========================= */
 function kirimPesan(){
-
   const nama = document.getElementById("namaUser").value;
   const no = document.getElementById("noUser").value;
   const pesan = document.getElementById("pesanUser").value;
@@ -455,7 +467,6 @@ function kirimPesan(){
 
   // tampilkan pesan user
   addBubble(pesan, "me");
-
   document.getElementById("pesanUser").value = "";
 
   fetch(GAS_URL + `?action=kirimPesan&nama=${encodeURIComponent(nama)}&no=${no}&pesan=${encodeURIComponent(pesan)}`)
@@ -466,10 +477,9 @@ function kirimPesan(){
   .catch(()=>{
     addBubble("❌ Gagal kirim", "bot");
   });
-
 }
-function addBubble(text, type){
 
+function addBubble(text, type){
   const box = document.getElementById("chatBox");
 
   const div = document.createElement("div");
@@ -477,7 +487,6 @@ function addBubble(text, type){
   div.innerText = text;
 
   box.appendChild(div);
-
   box.scrollTop = box.scrollHeight;
 }
 document.getElementById("pesanUser")
@@ -486,7 +495,6 @@ document.getElementById("pesanUser")
     kirimPesan();
   }
 });
-
 
 // ============================
 // 📱 REGISTER SERVICE WORKER
