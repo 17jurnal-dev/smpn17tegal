@@ -252,7 +252,7 @@ function loadData(mode, elementId){
       `;
     });
     document.getElementById(elementId).innerHTML = html;
-  });
+  })
   .catch(()=>{
     document.getElementById(elementId).innerHTML = "❌ Gagal load data";
   });
