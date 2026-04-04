@@ -230,8 +230,9 @@ function showPage(id, btn){
   if(id === "wa"){
     loadStatistik();
     loadInbox();
+  }
 }
-
+  
 /* =========================
 📊 LOAD DATA
 ========================= */
@@ -240,6 +241,7 @@ function loadData(mode, elementId){
   .then(res => {
     if(!res.ok) throw new Error("Network error");
     return res.json();
+  })
   .then(data => {
     let html = "";
     data.reverse().forEach(item => {
@@ -278,7 +280,6 @@ function checkNewData(){
 
 // cek tiap 15 detik
 setInterval(checkNewData, 15000);
-}
 
 // ============================
 // 👁️ PREVIEW WA
@@ -310,7 +311,7 @@ ${data.contohPesan}`;
 // 🚀 KIRIM WA
 // ============================
 function kirimWAAdmin(){
-  const kelas = document.getElementById("kelas").value;
+  const kelas = document.getElementById("kelasWA").value;
 
   if(!confirm("Yakin kirim WA ke " + kelas + "?")) return;
 
