@@ -19,16 +19,8 @@ body {
 }
 
 /* PAGE */
-.page {
-  display:none;
-  padding:15px;
-  max-width:500px;
-  margin:auto;
-}
-
-.active {
-  display:block;
-}
+.page {display:none;padding:15px;max-width:500px;margin:auto;}
+.active {display:block;}
 
 /* CARD */
 .card {
@@ -40,25 +32,11 @@ body {
 }
 
 /* IFRAME */
-iframe {
-  width:100%;
-  height:80vh;
-  border:none;
-  border-radius:10px;
-}
+iframe {width:100%;height:80vh;border:none;border-radius:10px;}
 
 /* CHAT */
-.chat-header {
-  text-align:center;
-  padding:10px;
-  font-weight:bold;
-}
-
-.chat-box {
-  height:60vh;
-  overflow-y:auto;
-  padding:10px;
-}
+.chat-header{text-align:center;padding:10px;font-weight:bold;}
+.chat-box{height:60vh;overflow-y:auto;padding:10px;}
 
 /* BUBBLE */
 .bubble {
@@ -70,17 +48,10 @@ iframe {
 }
 
 /* USER */
-.me {
-  background:#16a34a;
-  margin-left:auto;
-  text-align:right;
-}
+.me{background:#16a34a;margin-left:auto;text-align:right;}
 
 /* BOT */
-.bot {
-  background:#374151;
-  margin-right:auto;
-}
+.bot{background:#374151;margin-right:auto;}
 
 /* INPUT */
 .chat-input {
@@ -128,6 +99,20 @@ iframe {
 .navbar button.active {
   background:rgba(255,255,255,0.2);
 }
+
+/* TOAST */
+#toast{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#22c55e;
+  color:white;
+  padding:10px 20px;
+  border-radius:8px;
+  display:none;
+}
+
 </style>
 </head>
 
@@ -148,34 +133,24 @@ iframe {
 <!-- ABSENSI -->
 <div id="absensi" class="page">
   <h3>🎓 Absensi Siswa</h3>
-
   <div class="card">
-    <input id="nama" placeholder="Nama" style="width:100%;padding:10px;margin-bottom:10px;border-radius:8px;border:none;">
-    <input id="kelas" placeholder="Kelas" style="width:100%;padding:10px;margin-bottom:10px;border-radius:8px;border:none;">
-    
-    <button onclick="absen()" style="width:100%;padding:10px;border:none;border-radius:10px;">
-      ✅ Hadir
-    </button>
+    <input id="namaAbsen" placeholder="Nama">
+    <input id="kelasAbsen" placeholder="Kelas">
+    <button onclick="absen()">✅ Hadir</button>
   </div>
 </div>
 
-<!-- CHAT -->
 <!-- CHAT WHATSAPP STYLE -->
 <div id="chat" class="page">
+<div class="chat-header">💬 Chat Admin</div>
+<div id="chatBox" class="chat-box"></div>
 
-  <div class="chat-header">
-    💬 Chat Admin
-  </div>
-
-  <div id="chatBox" class="chat-box"></div>
-
-  <div class="chat-input">
-    <input id="namaUser" placeholder="Nama">
-    <input id="noUser" placeholder="62xxx">
-    <input id="pesanUser" placeholder="Tulis pesan...">
-    <button onclick="kirimPesan()">➤</button>
-  </div>
-
+<div class="chat-input">
+<input id="namaUser" placeholder="Nama">
+<input id="noUser" placeholder="62xxx">
+<input id="pesanUser" placeholder="Pesan">
+<button onclick="kirimPesan()">➤</button>
+</div>
 </div>
 
 <!-- JAMU LINU -->
@@ -192,19 +167,14 @@ iframe {
 <div id="wa" class="page">
   <h3>📲 WA Broadcast</h3>
 
-  <select id="kelas" style="width:100%;padding:10px;border-radius:10px;margin-bottom:10px;">
+  <select id="kelasWA">
     <option value="SEMUA">Semua Kelas</option>
     <option value="7A">7A</option>
     <option value="8B">8B</option>
   </select>
 
-  <button onclick="previewWA()" style="width:100%;padding:10px;border:none;border-radius:10px;margin-bottom:10px;">
-    👁️ Preview
-  </button>
-
-  <button onclick="kirimWAAdmin()" style="width:100%;padding:10px;border:none;border-radius:10px;margin-bottom:10px;">
-    🚀 Kirim WA
-  </button>
+  <button onclick="previewWA()">👁️ Preview</button>
+  <button onclick="kirimWAAdmin()">🚀 Kirim</button>
 
   <div id="previewBox" class="card">Preview akan muncul di sini...</div>
 
@@ -255,6 +225,7 @@ function showPage(id, btn){
 
   document.querySelectorAll(".navbar button").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
+  if(id==="wa"){loadStatistik();loadInbox();}
 }
 
 /* LOAD DATA */
@@ -315,7 +286,7 @@ function kirimWA(){
 // 👁️ PREVIEW WA
 // ============================
 function previewWA(){
-  const kelas = document.getElementById("kelas").value;
+  const kelas = document.getElementById("kelasWA").value;
 
   fetch(GAS_URL + "?action=previewWA&kelas=" + kelas + "&key=JITU2026")
   .then(res => res.json())
