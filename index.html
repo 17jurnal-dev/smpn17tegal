@@ -226,7 +226,10 @@ function showPage(id, btn){
   document.getElementById(id).classList.add("active");
 
   document.querySelectorAll(".navbar button").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
+  if(btn) btn.classList.add("active");
+  if(id === "wa"){
+    loadStatistik();
+    loadInbox();
 }
 
 /* =========================
@@ -234,7 +237,9 @@ function showPage(id, btn){
 ========================= */
 function loadData(mode, elementId){
   fetch(GAS_URL + "?mode=" + mode)
-  .then(res => res.json())
+  .then(res => {
+    if(!res.ok) throw new Error("Network error");
+    return res.json();
   .then(data => {
     let html = "";
     data.reverse().forEach(item => {
@@ -345,9 +350,9 @@ function cekNotif(){
     }
 
     lastJudul = d.judul;
-  });
+  })
+  .catch(()=>{});
 }
-
 // cek tiap 10 detik
 setInterval(cekNotif, 10000);
 
@@ -399,9 +404,9 @@ function loadStatistik(){
     document.getElementById("statGagal").innerText = d.gagal;
 
     renderChart(d);
-  });
+  })
+  .catch(()=>{});
 }
-if(id==="wa"){loadStatistik();loadInbox();}
 
 /* =========================
 📥 INBOX
@@ -418,18 +423,20 @@ function loadInbox(){
       </div>`;
     });
     document.getElementById("inboxList").innerHTML = html;
-  });
+  })
+  .catch(()=>{});
 }
 
 /* =========================
 🎓 ABSENSI
 ========================= */
 function absen(){
-  const nama = document.getElementById("nama").value;
-  const kelas = document.getElementById("kelas").value;
+  const nama = document.getElementById("namaAbsen").value;
+  const kelas = document.getElementById("kelasAbsen").value;
 
   fetch(GAS_URL+`?action=absen&nama=${nama}&kelas=${kelas}`)
-  .then(()=>showToast("✅ Absen berhasil"));
+  .then(()=>showToast("✅ Absen berhasil"))
+  .catch(()=>showToast("❌ Gagal absen"));
 }
 
 window.OneSignal = window.OneSignal || [];
@@ -459,7 +466,7 @@ function kirimPesan(){
   fetch(GAS_URL + `?action=kirimPesan&nama=${encodeURIComponent(nama)}&no=${no}&pesan=${encodeURIComponent(pesan)}`)
   .then(res=>res.json())
   .then(res=>{
-    addBubble(res.reply, "bot");
+    addBubble(res.reply || "OK", "bot");
   })
   .catch(()=>{
     addBubble("❌ Gagal kirim", "bot");
@@ -476,6 +483,7 @@ function addBubble(text, type){
   box.appendChild(div);
   box.scrollTop = box.scrollHeight;
 }
+/* ENTER CHAT */
 document.getElementById("pesanUser")
 .addEventListener("keypress", function(e){
   if(e.key === "Enter"){
